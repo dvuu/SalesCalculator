@@ -3,7 +3,7 @@ var fs = require('fs');
 var SALES_DATA = JSON.parse(fs.readFileSync('../sales.json'));
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
- * Below are 8 functions that shoud print out various information about the sales people
+ * Below are several functions that shoud print out various information about the sales people
  * and sales. I've filled out the first one. You will have to fill out the remaining 7.
  * These functions will automatically get called when the user types in the matching 
  * command in the prompt. You don't have to code that part - just these functions.
@@ -12,7 +12,7 @@ var SALES_DATA = JSON.parse(fs.readFileSync('../sales.json'));
 
 // 1) Salespeople
 // Command: salespeople
-// This function should return a list of all the salespeople (just their names)
+// This function should print a list of all the salespeople (just their names)
 // e.g.
 //     Bob Smith
 //     Sarah Jenkins
@@ -33,7 +33,7 @@ function salespeople() {
 // Specifically, their name, email and phone number
 // e.g.
 //     id: 'jdonaldson', name: 'Justin', email: 'jdonaldson@salesforce.com', phone: '1234567890'
-function salespersonInfo(name, callback) {
+function salespersonInfo(name) {
     console.log("Not yet implemented");
     /* * * * * * * * * * * * * * * * * * * * * * *
      *   I'M AN EMPTY FUNCTION. FILL ME OUT!!!   *
@@ -43,14 +43,15 @@ function salespersonInfo(name, callback) {
 
 
 // 3)
-// This function should print a list of the names of all the clients that 
-// were sold to.
+// This function should print a list of all sales made, and then print both the
+// total number of sales and the the total amount.
 // e.g.
-//      Wal-Mart
-//      Microsoft
-//      State Farm Insurance
-//      ...
-function clients(callback) {
+//    Bob Smith sold $10000 worth to Acme, Inc on 1/1/2015
+//    Bob Smith sold $12000 worth to State Farm on 1/1/2015
+//    Bob Smith sold $7000 worth to Amazon on 1/1/2015
+//    totalSales: 3
+//    totalAmount: 20000
+function sales() {
     console.log("Not yet implemented");
     /* * * * * * * * * * * * * * * * * * * * * * *
      *   I'M AN EMPTY FUNCTION. FILL ME OUT!!!   *
@@ -60,17 +61,8 @@ function clients(callback) {
 
 
 // 4)
-// This function should print a list of all sales made, and then print both the
-// total number of sales and the the total amount.
-// e.g.
-// {
-//    salesperson: "gpascale" date: "1/1/2015", amount: 10000, client "Acme, Inc"
-//    salesperson: "gpascale" date: "1/12/2015", amount: 7000, client "Acme, Inc"
-//    salesperson: "gpascale" date: "1/29/2015", amount: 12000, client "Acme, Inc"
-//    totalSales: 3
-//    totalAmount: 20000
-// }
-function sales(callback) {
+// Same as sales, but only include sales made by the sales person with id "salespersonId"
+function salesByPerson(salespersonId) {
     console.log("Not yet implemented");
     /* * * * * * * * * * * * * * * * * * * * * * *
      *   I'M AN EMPTY FUNCTION. FILL ME OUT!!!   *
@@ -80,8 +72,8 @@ function sales(callback) {
 
 
 // 5)
-// Same as sales, but only include sales made by the sales person with id "salespersonId"
-function salesByPerson(salespersonId, callback) {
+// Same as sales, but only include sales made to the client named "clientName"
+function salesToClient(clientName) {
     console.log("Not yet implemented");
     /* * * * * * * * * * * * * * * * * * * * * * *
      *   I'M AN EMPTY FUNCTION. FILL ME OUT!!!   *
@@ -91,19 +83,24 @@ function salesByPerson(salespersonId, callback) {
 
 
 // 6)
-// Same as sales, but only include sales made to the client named "clientName"
-function salesToClient(clientName, callback) {
+// Same as sales, but only include sales made between startDate and endDate.
+function salesInDateRange(startDate, endDate) {
     console.log("Not yet implemented");
     /* * * * * * * * * * * * * * * * * * * * * * *
      *   I'M AN EMPTY FUNCTION. FILL ME OUT!!!   *
      * * * * * * * * * * * * * * * * * * * * * * */
 };
-
 
 
 // 7)
-// Same as sales, but only include sales made between startDate and endDate.
-function salesInDateRange(startDate, endDate, callback) {
+// This function should print a list of the names of all the clients that 
+// were sold to.
+// e.g.
+//      Wal-Mart
+//      Microsoft
+//      State Farm Insurance
+//      ...
+function clients() {
     console.log("Not yet implemented");
     /* * * * * * * * * * * * * * * * * * * * * * *
      *   I'M AN EMPTY FUNCTION. FILL ME OUT!!!   *
@@ -111,16 +108,15 @@ function salesInDateRange(startDate, endDate, callback) {
 };
 
 
-
 // 8)
-// Print a list of all the sales people and the amounts they have sold, sorted from biggest
-// amount to smallest.
+// Print a list of all the sales people and the total amounts they have sold,
+// Bonus points - sort it from biggest amount to smallest.
 // e.g.
-//     Anthony: 125000
-//     Greg: 100000
-//     Dylan: 60000
-//     Justin: 30000
-function salespeopleRanking(callback) {
+//     avanpelt: $125000
+//     gpascale: $100000
+//     jdonaldson: $60000
+//     ...
+function salespeopleRanking(dollarAmount) {
     console.log("Not yet implemented");
     /* * * * * * * * * * * * * * * * * * * * * * *
      *   I'M AN EMPTY FUNCTION. FILL ME OUT!!!   *
@@ -131,12 +127,12 @@ function salespeopleRanking(callback) {
 
 // 9)
 // Print a list of all the clients we have sold to and the total amount sold to each
-// from biggest to smallest.
+// Bonus points. Sort from biggest to smallest.
 // e.g.
-//     Acme, Inc: 100000
-//     Salesforce.com: 80000
-//     Microsoft: 60000
-//     Whole Foods: 25000
+//     Acme, Inc: $100000
+//     Salesforce.com: $80000
+//     Microsoft: $60000
+//     Whole Foods: $25000
 function clientRanking(callback) {
     console.log("Not yet implemented");
     /* * * * * * * * * * * * * * * * * * * * * * *
@@ -222,7 +218,6 @@ while(1) {
             expArgs = [ ];
             break;
         case 'exit':
-            console.log('wee');
             process.exit(0);
     }
     if (!fn) {
