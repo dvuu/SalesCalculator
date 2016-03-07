@@ -32,7 +32,8 @@ for (var i = 0; i < NUM_SALESPEOPLE; ++i) {
     result.salespeople.push({
         name: firstName + ' ' + lastName,
         phone: chance.phone(),
-        email: firstName.toLowerCase() + '.' + lastName.toLowerCase() + '@gmail.com'
+        email: firstName.toLowerCase() + '.' + lastName.toLowerCase() + '@gmail.com',
+        id: firstName[0].toLowerCase() + lastName.toLowerCase()
     });
 }
 
@@ -42,7 +43,7 @@ result.sales = [ ];
 for (var i = 0; i < NUM_SALES; ++i) {
     var salesperson = chance.pickone(result.salespeople);
     result.sales.push({
-        salesperson: salesperson.name,
+        salespersonId: salesperson.id,
         amount: chance.integer({ min: 1, max: 100 }) * 10000,
         date: chance.date({string: true, year: 2015}),
         client: chance.pickone(clients)
