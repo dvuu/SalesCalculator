@@ -1,6 +1,6 @@
 var fs = require('fs');
 // Read in the data from our data file and parse it into a Javascript object
-var SALES_DATA = JSON.parse(fs.readFileSync('../sales.json'));
+var SALES_DATA = JSON.parse(fs.readFileSync('data/sales.json'));
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
  * Below are several functions that shoud print out various information about the sales people

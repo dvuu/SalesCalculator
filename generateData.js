@@ -1,5 +1,6 @@
 // This file contains code to generate a random sales.json file. It uses a 
 // library called chance.js which contains handy functions for generating random things.
+// YOU DON'T NEED TO RUN THIS
 
 var fs = require('fs');
 var chance = new (require('chance'))();
