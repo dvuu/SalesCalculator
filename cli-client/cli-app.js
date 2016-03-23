@@ -53,7 +53,10 @@ function salespersonInfo(id) {
     console.log('requesting ' + requestUrl + '...');
     var result = request('GET', requestUrl);
     try {
-        // TODO
+        var salesperson = JSON.parse(result.getBody('utf8'));
+        for (var key in salesperson) {
+            console.log(key + ":" + salesperson[key]);
+        }
     }
     catch (err) {
         console.log(err);

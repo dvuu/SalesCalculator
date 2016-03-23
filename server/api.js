@@ -2,8 +2,11 @@
 // routes like javascript functions, but over the internet. 
 
 var fs = require('fs');
-var SALES_DATA = JSON.parse(fs.readFileSync('data/sales.json'));
+var SALES_DATA = JSON.parse(fs.readFileSync('../data/sales.json'));
 var _ = require('underscore');
+
+var salespeople = SALES_DATA.salespeople;
+var sales = SALES_DATA.sales;
 
 module.exports = function(app) {
 
@@ -12,8 +15,8 @@ module.exports = function(app) {
     app.get('/api/salespeople', function(req, res) {
         // Create a list of all the salespeople's names to send back to the client.
         var result = [ ];
-        for (var i = 0; i < SALES_DATA.salespeople.length; ++i) {
-            result.push(SALES_DATA.salespeople[i].name);
+        for (var i = 0; i < salespeople.length; ++i) {
+            result.push(salespeople[i].name);
         }
         // First, we write the response headers.
         // HTTP requests have status codes which indicate success, failure, or sometimes
@@ -38,10 +41,17 @@ module.exports = function(app) {
         // - If a matching salesperson is found, send their info along with the status code 200.
         // - If there is no salesperson matching the id, send an error message
         //   along with status code 404
-
-        // Take this out
-        res.send("Not yet implemented");
+        var result = { };
+        for (var i = 0; i < salespeople.length; ++i) {
+            if (id == salespeople[i].id) {
+                result.id = salespeople[i].id;
+                result.name = salespeople[i].name;
+                result.phone = salespeople[i].phone;
+                result.email = salespeople[i].email;
+                break;
+            }
+        }
+        res.writeHead(200, {'Content-Type': 'application/json'});
+        res.end(JSON.stringify(result));
     });
-
-    // ... Fill out more routes here
 };
