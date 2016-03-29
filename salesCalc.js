@@ -135,7 +135,7 @@ function salesToClient(clientName) {
     var count = 0;
     var totalIncome = 0;
     for (var i = 0; i < sales.length; ++i) {
-        if(clientName == sales[i].client) {
+        if (clientName == sales[i].client) {
             var name = findNameFromId(sales[i].salespersonId);
             var amount = sales[i].amount;
             var client = sales[i].client;
@@ -335,7 +335,6 @@ function median(values) {
     values.sort(function(a, b) {
         return a - b;
     });
-    console.log(values);
     var half = Math.floor(values.length / 2);
     if(values.length % 2) {
         return values[half];

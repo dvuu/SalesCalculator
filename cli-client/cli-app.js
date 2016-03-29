@@ -1,5 +1,6 @@
 var fs = require('fs');
 var request = require('sync-request');
+var _ = require('underscore');
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
  * Below are several functions that shoud print out various information about the sales people
@@ -29,16 +30,24 @@ function salespeople() {
     try {
         // The response comes back as a string, but we know it is a JSON string,
         // so we can turn it into an object
-        var salespeople = JSON.parse(result.getBody('utf8'));
+        var result = JSON.parse(result.getBody('utf8'));
         // Loop over all the salespeople and print out each of their names
-        for (var i = 0; i < salespeople.length; ++i)
-            console.log(salespeople[i]);
+        
+        // regular way
+        for (var i = 0; i < result.salespeople.length; ++i) {
+             console.log(result.salespeople[i].name);
+        }
+
+        // underscore way
+        // _.each(result.salespeople, function(element) {
+        //     console.log(element.name);
+        // });
     }
     catch (err) {
         // If there was an error, display information about it
         console.log(err);
     }
-};
+}
 
 
 
@@ -55,11 +64,15 @@ function salespersonInfo(id) {
     try {
         var salesperson = JSON.parse(result.getBody('utf8'));
         for (var key in salesperson) {
-            console.log(key + ":" + salesperson[key]);
+            console.log(key + ": " + salesperson[key]);
         }
+
+        // _.each(salesperson, function(val, key) {
+        //     console.log(key + ': ' + val);
+        // });
     }
     catch (err) {
-        console.log(err);
+        console.error(error);
     }
 }
 
@@ -75,44 +88,85 @@ function salespersonInfo(id) {
 //    totalSales: 3
 //    totalAmount: 20000
 function sales() {
-    console.log("Not yet implemented");
-    /* * * * * * * * * * * * * * * * * * * * * * *
-     *   I'M AN EMPTY FUNCTION. FILL ME OUT!!!   *
-     * * * * * * * * * * * * * * * * * * * * * * */
-};
+    var requestUrl = API_ENDPOINT + '/sales';
+    console.log('requesting ' + requestUrl + '...');
+    var result = request('GET', requestUrl);
+    try {
+        var result = JSON.parse(result.getBody('utf8'));
+        for (var i = 0; i < result.sales.length; ++i) {
+            console.log(result.sales[i].name + " sold $" + result.sales[i].amount + " worth to " + result.sales[i].client + " on " + result.sales[i].date + ".");
+        }
+        console.log("Total Sales: " + result.totalSales);
+        console.log("Total Amount: $" + result.totalAmount);
+    }
+    catch (err) {
+        console.log(err);
+    }
+}
 
 
 
 // 4)
 // Same as sales, but only include sales made by the sales person with id "salespersonId"
 function salesByPerson(salespersonId) {
-    console.log("Not yet implemented");
-    /* * * * * * * * * * * * * * * * * * * * * * *
-     *   I'M AN EMPTY FUNCTION. FILL ME OUT!!!   *
-     * * * * * * * * * * * * * * * * * * * * * * */
-};
+    var requestUrl = API_ENDPOINT + '/salesByPerson/' + salespersonId;
+    console.log('requesting ' + requestUrl + '...');
+    var result = request('GET', requestUrl);
+    try {
+        var result = JSON.parse(result.getBody('utf8'));
+        for (var i = 0; i < result.sales.length; ++i) {
+            console.log(result.sales[i].name + " sold $" + result.sales[i].amount + " worth to " + result.sales[i].client + " on " + result.sales[i].date + ".");
+        }
+        console.log("Total Sales: " + result.totalSales);
+        console.log("Total Amount: $" + result.totalAmount);
+    }
+    catch(err) {
+        console.log(err);
+    }
+}
 
 
 
 // 5)
 // Same as sales, but only include sales made to the client named "clientName"
 function salesToClient(clientName) {
-    console.log("Not yet implemented");
-    /* * * * * * * * * * * * * * * * * * * * * * *
-     *   I'M AN EMPTY FUNCTION. FILL ME OUT!!!   *
-     * * * * * * * * * * * * * * * * * * * * * * */
-};
+    var requestUrl = API_ENDPOINT + '/salesToClient/' + clientName;
+    console.log('reqeusting ' + requestUrl + '...');
+    var result = request('GET', requestUrl);
+    try {
+        var result = JSON.parse(result.getBody('utf8'));
+        for (var i = 0; i < result.sales.length; ++i) {
+            console.log(result.sales[i].name + " sold $" + result.sales[i].amount + " worth to " + result.sales[i].client + " on " + result.sales[i].date + ".");
+        }
+        console.log("Total Sales: " + result.totalSales);
+        console.log("Total Amount: $" + result.totalAmount);
+    }
+    catch(err) {
+        console.log(err);
+    }
+}
 
 
 
 // 6)
 // Same as sales, but only include sales made between startDate and endDate.
 function salesInDateRange(startDate, endDate) {
-    console.log("Not yet implemented");
-    /* * * * * * * * * * * * * * * * * * * * * * *
-     *   I'M AN EMPTY FUNCTION. FILL ME OUT!!!   *
-     * * * * * * * * * * * * * * * * * * * * * * */
-};
+    var requestUrl = API_ENDPOINT + '/salesInDateRange/' + startDate + '/' + endDate;
+    console.log('requesting ' + requestUrl + '...');
+    var result = request('GET', requestUrl);
+    try {
+        var result = JSON.parse(result.getBody('utf8'));
+        for (var i = 0; i < result.sales.length; ++i) {
+            console.log(result.sales[i].name + " sold $" + result.sales[i].amount + " worth to " + result.sales[i].client + " on " + result.sales[i].date + ".");
+        }
+        console.log("Total Sales: " + result.totalSales);
+        console.log("Total Amount: $" + result.totalAmount);
+    }
+    catch(err) {
+        console.log(err);
+    }
+}
+
 
 
 // 7)
@@ -124,11 +178,19 @@ function salesInDateRange(startDate, endDate) {
 //      State Farm Insurance
 //      ...
 function clients() {
-    console.log("Not yet implemented");
-    /* * * * * * * * * * * * * * * * * * * * * * *
-     *   I'M AN EMPTY FUNCTION. FILL ME OUT!!!   *
-     * * * * * * * * * * * * * * * * * * * * * * */
-};
+    var requestUrl = API_ENDPOINT + '/clients';
+    console.log('requesting ' + requestUrl + '...');
+    var result = request('GET', requestUrl);
+    try {
+        var result = JSON.parse(result.getBody('utf8'));
+        for (var i = 0; i < result.clients.length; ++i) {
+            console.log(result.clients[i].client + ': ' + result.clients[i].totalSales + ' sales');
+        }
+    }
+    catch(err) {
+        console.log(err);
+    }
+}
 
 
 // 8)
@@ -139,11 +201,19 @@ function clients() {
 //     gpascale: $100000
 //     jdonaldson: $60000
 //     ...
-function salespeopleRanking(dollarAmount) {
-    console.log("Not yet implemented");
-    /* * * * * * * * * * * * * * * * * * * * * * *
-     *   I'M AN EMPTY FUNCTION. FILL ME OUT!!!   *
-     * * * * * * * * * * * * * * * * * * * * * * */
+function salespeopleRanking() {
+    var requestUrl = API_ENDPOINT + '/salespeopleRanking';
+    console.log('reuqesting ' + requestUrl + '...');
+    var result = request('GET', requestUrl);
+    try {
+        var result = JSON.parse(result.getBody('utf8'));
+        for (var i = 0; i < result.salespeople.length; ++i) {
+            console.log(result.salespeople[i].salesperson + ': $' + result.salespeople[i].totalAmount + ' sold');
+        }
+    }
+    catch(err) {
+        console.log(err);
+    }
 }
 
 
@@ -156,11 +226,19 @@ function salespeopleRanking(dollarAmount) {
 //     Salesforce.com: $80000
 //     Microsoft: $60000
 //     Whole Foods: $25000
-function clientRanking(callback) {
-    console.log("Not yet implemented");
-    /* * * * * * * * * * * * * * * * * * * * * * *
-     *   I'M AN EMPTY FUNCTION. FILL ME OUT!!!   *
-     * * * * * * * * * * * * * * * * * * * * * * */
+function clientRanking() {
+    var requestUrl = API_ENDPOINT + '/clientRanking';
+    console.log('reuqesting ' + requestUrl + '...');
+    var result = request('GET', requestUrl);
+    try {
+        var result = JSON.parse(result.getBody('utf8'));
+        for (var i = 0; i < result.clients.length; ++i) {
+            console.log(result.clients[i].client + ': $' + result.clients[i].totalAmount + ' bought');
+        }
+    }
+    catch(err) {
+        console.log(err);
+    }
 }
 
 
@@ -175,10 +253,18 @@ function clientRanking(callback) {
 //     Avg Sale $: 20000
 //     Median Sale $: 56000
 function salespersonStats(salespersonId) {
-    console.log("Not yet implemented");
-    /* * * * * * * * * * * * * * * * * * * * * * *
-     *   I'M AN EMPTY FUNCTION. FILL ME OUT!!!   *
-     * * * * * * * * * * * * * * * * * * * * * * */
+    var requestUrl = API_ENDPOINT + '/salespersonStats/' + salespersonId;
+    console.log('requesting ' + requestUrl + '...');
+    var result = request('GET', requestUrl);
+    try {
+        var salesperson = JSON.parse(result.getBody('utf8'));
+        for (var key in salesperson) {
+            console.log(key + ': ' + salesperson[key]);
+        }
+    }
+    catch(err) {
+        console.log(error);
+    }
 }
 
 
@@ -234,7 +320,11 @@ while(1) {
             break;
         case 'salesInDateRange':
             fn = salesInDateRange;
-            expArgs = [ 'date', 'date' ];
+            expArgs = [ 'string', 'string' ];
+            break;
+        case 'salespersonStats':
+            fn = salespersonStats;
+            expArgs = [ 'string' ];
             break;
         case 'help':
             fn = printHelp;
@@ -266,7 +356,7 @@ function printHelp() {
     console.log('sales - print a list of all sales and also the total amount');
     console.log('salesByPerson <salespersonId> - print a list of all sales made by the salesperson with id <salespersonId>');
     console.log('salesToClient <client> - print a list of all sales made to <client>');
-    console.log('salesInDateRange <startDate> <endDate> - print a list of all sales made between <startDate> and <endDate>');
+    console.log('salesInDateRange <startDate> <endDate> - print a list of all sales made between <startDate> and <endDate>. (ex: 1-1-2015 12-1-2015)');
     console.log('salespersonRanking - print a list of all the salespeople and their total sales amount, sorted from biggest to least');
     console.log('clientRanking - print a list of all the salespeople and their total sales amount, sorted from biggest to least');
     console.log('salespersonStats <salespersonId> - print some stats about the performance of the salesperson with id <salespersonId>')
