@@ -30,7 +30,7 @@ function createNewResult() {
 // Helper function: Add a single sale to results
 function addSaleToResult(sale, result) {
     var obj = { };
-    obj.salespersonId = sale.salespersonId;
+    obj.id = sale.salespersonId;
     obj.name = findNameFromId(sale.salespersonId);
     obj.amount = sale.amount;
     obj.date = sale.date;
@@ -43,7 +43,6 @@ function addSaleToResult(sale, result) {
 // Helper function: Replaces underscores with spaces
 function replaceUnderScr(clientName) {
     return clientName.replace(/_/g, " ");
-    return clientName;
 }
 
 // Helper function: Sort by date (ascending)
@@ -81,6 +80,7 @@ module.exports = function(app) {
         };
         for (var i = 0; i < people.length; ++i) {
             var obj = { };
+            obj.id = people[i].id;
             obj.name = people[i].name;
             result.salespeople.push(obj);
         }
@@ -272,6 +272,8 @@ module.exports = function(app) {
         var salespersonId = req.params.salespersonId;
         console.log("Client requested stats of salesperson: " + salespersonId + "...");
         var obj = { 
+            salespersonId: undefined,
+            name: undefined,
             totalSales: 0,
             totalIncome: 0
         };
