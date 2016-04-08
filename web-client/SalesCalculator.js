@@ -4,56 +4,111 @@
 // the function we tell it to only after the page has finished rendering
 
 $(document).ready(function() {
-    // Wire up the submit button to do something when clicked...
-    $('.salespeopleLink').click(function(e) {
-        displaySalespeople();
+    $('#home').click(function(e) {
+        location.reload();
     });
-});
 
-$(document).ready(function() {
     $('.salesLink').click(function(e) {
-        displaySales();
+        fetchAndDisplaySales('/api/sales');
     });
+
+    buildSalesPeopleFilter();
+
+    buildClientFilter();
+    
+    fetchAndDisplaySales('/api/sales');
 });
 
-function displaySalespeople() {
-    $('.results').empty();
-    // Make a request to get the salespeople data
+function createSalesList(result) {
+    var $results = $('.results');
+    $results.empty();
+    var $salesList = $('<ul class="sales"></ul>');
+    $results.append('<h4>' + 'Total Sales: ' + result.totalSales + '</h4>');
+    $results.append('<h4>' + 'Total Amount: ' + result.totalAmount + '</h4>');
+    _.each(result.sales, function(sale) {
+        $salesList.append('<li>' + sale.name 
+            + " sold $" + sale.amount 
+            + " worth to " + sale.client 
+            + " on " + sale.date 
+            + "." + '</li>');
+    });
+    $('.results').append($salesList);
+}
+
+function fetchAndDisplaySales(url) {
+    $.ajax({ url: url, success: function(result) {
+        buildChartFromData(result);
+        createSalesList(result);
+    }});
+}
+
+function buildSalesPeopleFilter() {
+    $('.salespeopleDropdown .dropdown-content').empty();
     $.ajax({ url: '/api/salespeople', success: function(result){
-        // Create a new html list to display the data
-        var salespeopleList = $('<ul class="salespeople"></ul>');
-        // One by one, add a list element to the list for each salesperson
-        
-        // for (var i = 0; i < result.salespeople.length; ++i) {
-        //     salespeopleList.append('<li>' + result.salespeople[i].name + '</li>');
-        // }
-
+        var $salespeopleList = $('<ul class="salespeople"></ul>');
         _.each(result.salespeople, function(salesperson) {
-            salespeopleList.append('<li>' + salesperson.name + '</li>');
+            var $aTag = $('<a href="#">' + salesperson.name + '</a>');
+            $aTag.attr('salespersonId', salesperson.id);
+            $aTag.click(function(e) {
+                var id = $(e.currentTarget).attr('salespersonId');
+                var url = '/api/salesByPerson/' + id;
+                fetchAndDisplaySales(url);
+            });
+            var $listItem = $('<li></li>');
+            $listItem.append($aTag);
+            $salespeopleList.append($listItem);
         });
-
-        // Add the list to the page inside the "results" element
-        $('.results').append(salespeopleList);
+        $('.salespeopleDropdown .dropdown-content').append($salespeopleList);
     }, error: function() {
         console.log("error");
     }});
 }
 
-function displaySales() {
-    $('.results').empty();
-    $.ajax({ url: '/api/sales', success: function(result) {
-        var $results = $('.results');
-        var salesList = $('<ul class="sales"></ul>');
-        // _.each(result, function(val, key) {
-        //     salesList.append('<li>' + key + ': ' + val + '</li>');
-        // });
-        $results.append('<h4>' + 'Total Sales: ' + result.totalSales + '</h4>');
-        $results.append('<h4>' + 'Total Amount: ' + result.totalAmount + '</h4>');
-        _.each(result.sales, function(sales) {
-            salesList.append('<li>' + '<a href="#">' + sales.name + '</a>' + " sold $" + sales.amount + " worth to " + sales.client + " on " + sales.date + "." + '</li>');
+function buildClientFilter() {
+    $('.clientsDropdown .dropdown-content').empty();
+    $.ajax({ url: 'api/clients', success: function(result) {
+        var $clientList = $('<ul class="clients"></ul>');
+        _.each(result.clients, function(client) {
+            var $aTag = $('<a href="#">' + client.client + '</a>');
+            $aTag.click(function(e) {
+                var clientName = $(e.currentTarget).text();
+                var url = '/api/salesToClient/' + clientName;
+                fetchAndDisplaySales(url);
+            });
+            var $listItem = $('<li></li>');
+            $listItem.append($aTag);
+            $clientList.append($listItem);
         });
-        $('.results').append(salesList);
-    }, errpr: function() {
+        $('.clientsDropdown .dropdown-content').append($clientList);
+    }, error: function() {
         console.log("error");
     }});
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

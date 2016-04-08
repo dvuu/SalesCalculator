@@ -1,3 +1,49 @@
-.results h4 {
-	font-size: 20px; 
+h1 {
+	padding: 20px;
+	text-align: center;
+	color: white;
+	font-weight: normal;
+	font-family: helvetica-light;
+	background-color: rgb(0,139,117);
+}
+
+#home {
+	text-decoration: none;
+}
+
+#graph {
+	width: 960px;
+	height: 540px;
+	margin: 0 auto;
+}
+
+.dropdown {
+	position: relative;
+	display: inline-block;
+	cursor: pointer;
+}
+
+.salesLink{
+	text-decoration: none;
+}
+
+.dropdown-content {
+	background-color: #eeeeee;
+	display: none;
+	position: absolute;
+	min-width: 240px;
+	z-index: 1;
+}
+
+.dropdown-content li {
+	list-style-type: none;
+	text-decoration: none;
+}
+
+a {
+	text-decoration: none;
+}
+
+.dropdown:hover .dropdown-content {
+	display: block;
 }
