@@ -1,20 +1,25 @@
-h1 {
-	padding: 20px;
-	text-align: center;
-	color: white;
-	font-weight: normal;
+body {
+	margin: 0;
 	font-family: helvetica-light;
+}
+
+.banner {
+	padding: 40px;
+	max-width: 100%;
 	background-color: rgb(0,139,117);
+	box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+	z-index: 2;
 }
 
 #home {
+	font-size: 40px;
+	color: white;
+	font-weight: normal;
 	text-decoration: none;
 }
 
-#graph {
-	width: 960px;
-	height: 540px;
-	margin: 0 auto;
+.nav {
+	padding-left: 40px;
 }
 
 .dropdown {
@@ -23,27 +28,102 @@ h1 {
 	cursor: pointer;
 }
 
-.salesLink{
-	text-decoration: none;
+.dropdown p {
+	padding: 10px;
+	margin: 0px;
 }
 
 .dropdown-content {
+	padding-top: 2px;
+	padding-bottom: 2px;
 	background-color: #eeeeee;
 	display: none;
 	position: absolute;
-	min-width: 240px;
+	min-width: 210px;
+	z-index: inherit;
+	box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+}
+
+.dropdown-content a {
+	padding-left: 10px;
+	text-decoration: none;
+	color: black;
+}
+
+.links {
+	padding-top: 2px; 
+	padding-bottom: 2px;
+}
+
+.dropdown:hover {
+	background-color: #eeeeee;
+	box-shadow: 0px 8px 16px 3px rgba(0,0,0,0.2);
 	z-index: 1;
-}
-
-.dropdown-content li {
-	list-style-type: none;
-	text-decoration: none;
-}
-
-a {
-	text-decoration: none;
 }
 
 .dropdown:hover .dropdown-content {
 	display: block;
 }
+
+.clearBtn {
+	padding: 10px;
+	margin: 0px;
+}
+
+.chartTitle p {
+	font-size: 28px;
+	text-align: center;
+}
+
+#chart {
+	width: 960px;
+	height: 540px;
+	margin: 0 auto;
+}
+
+.results {
+	align-content: center;
+	max-width: 650px;
+	margin: 0 auto;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

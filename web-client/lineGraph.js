@@ -4,7 +4,7 @@
 // 	}});
 // }
 
-function buildChartFromData(result) {
+function buildChartFromData(result, title) {
 	var incomeSeries = {
 		x: [ ],
 		y: [ ],
@@ -40,7 +40,8 @@ function buildChartFromData(result) {
 
 	var layout = {
 	    xaxis: {
-	    	title: 'Date(mm/dd/yyyy)'
+	    	title: 'Date(mm/dd/yyyy)',
+	    	tickangle: 45,
 	    },
 	    yaxis: {
 	    	title: 'Income($)'
@@ -49,5 +50,5 @@ function buildChartFromData(result) {
 	};
 
 	var data = [incomeSeries, salesSeries];
-	Plotly.newPlot('graph', data, layout, {showLink: false, displaylogo: false});
+	Plotly.newPlot('chart', data, layout, {showLink: false, displaylogo: false});
 }

@@ -8,23 +8,23 @@ $(document).ready(function() {
         location.reload();
     });
 
-    $('.salesLink').click(function(e) {
-        fetchAndDisplaySales('/api/sales');
+    $('.clearBtn').click(function(e) {
+        fetchAndDisplaySales('/api/sales', 'All Sales');
     });
 
     buildSalesPeopleFilter();
 
     buildClientFilter();
     
-    fetchAndDisplaySales('/api/sales');
+    fetchAndDisplaySales('/api/sales', 'All Sales');
 });
 
 function createSalesList(result) {
     var $results = $('.results');
     $results.empty();
     var $salesList = $('<ul class="sales"></ul>');
-    $results.append('<h4>' + 'Total Sales: ' + result.totalSales + '</h4>');
-    $results.append('<h4>' + 'Total Amount: ' + result.totalAmount + '</h4>');
+    $results.append('<h4>Total Sales: ' + result.totalSales + '</h4>');
+    $results.append('<h4>Total Amount: $' + result.totalAmount + '</h4>');
     _.each(result.sales, function(sale) {
         $salesList.append('<li>' + sale.name 
             + " sold $" + sale.amount 
@@ -32,33 +32,35 @@ function createSalesList(result) {
             + " on " + sale.date 
             + "." + '</li>');
     });
-    $('.results').append($salesList);
+    $results.append($salesList);
 }
 
-function fetchAndDisplaySales(url) {
+function fetchAndDisplaySales(url, title) {
+    $('.chartTitle').empty();
     $.ajax({ url: url, success: function(result) {
         buildChartFromData(result);
         createSalesList(result);
+        $('.chartTitle').append('<p>' + title + '</p>');
+    }, error: function() {
+        console.log("error");
     }});
 }
 
 function buildSalesPeopleFilter() {
     $('.salespeopleDropdown .dropdown-content').empty();
     $.ajax({ url: '/api/salespeople', success: function(result){
-        var $salespeopleList = $('<ul class="salespeople"></ul>');
         _.each(result.salespeople, function(salesperson) {
             var $aTag = $('<a href="#">' + salesperson.name + '</a>');
             $aTag.attr('salespersonId', salesperson.id);
             $aTag.click(function(e) {
                 var id = $(e.currentTarget).attr('salespersonId');
                 var url = '/api/salesByPerson/' + id;
-                fetchAndDisplaySales(url);
+                fetchAndDisplaySales(url, 'Sales by ' + salesperson.name);
             });
-            var $listItem = $('<li></li>');
+            var $listItem = $('<div class="links"><div>');
             $listItem.append($aTag);
-            $salespeopleList.append($listItem);
+            $('.salespeopleDropdown .dropdown-content').append($listItem);
         });
-        $('.salespeopleDropdown .dropdown-content').append($salespeopleList);
     }, error: function() {
         console.log("error");
     }});
@@ -67,19 +69,17 @@ function buildSalesPeopleFilter() {
 function buildClientFilter() {
     $('.clientsDropdown .dropdown-content').empty();
     $.ajax({ url: 'api/clients', success: function(result) {
-        var $clientList = $('<ul class="clients"></ul>');
         _.each(result.clients, function(client) {
             var $aTag = $('<a href="#">' + client.client + '</a>');
             $aTag.click(function(e) {
                 var clientName = $(e.currentTarget).text();
                 var url = '/api/salesToClient/' + clientName;
-                fetchAndDisplaySales(url);
+                fetchAndDisplaySales(url, 'Sales to ' + clientName);
             });
-            var $listItem = $('<li></li>');
+            var $listItem = $('<div class="filter"><div>');
             $listItem.append($aTag);
-            $clientList.append($listItem);
+            $('.clientsDropdown .dropdown-content').append($listItem);
         });
-        $('.clientsDropdown .dropdown-content').append($clientList);
     }, error: function() {
         console.log("error");
     }});
